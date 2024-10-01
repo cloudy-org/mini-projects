@@ -1,0 +1,8 @@
+[package]
+name = "roseate-native"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+iced = { version = "0.13.1", features = ["image"]}
+rfd = "0.15.0"
