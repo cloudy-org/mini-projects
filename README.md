@@ -2,9 +2,9 @@
 
  # 🍙 mini-projects
 
- <sub>🌷 Cute little projects made by cloudy org members.</sub>
+ <sub>🌷 Repo containing projects we're currently prototyping.</sub>
 
- <img width="800px" src="https://github.com/cloudy-org/mini-projects/assets/66202304/c7235a40-1865-4076-af0f-1bdbefce990d">
+ <img width="750px" src="https://github.com/cloudy-org/mini-projects/assets/66202304/c7235a40-1865-4076-af0f-1bdbefce990d">
 
 </div>
 
