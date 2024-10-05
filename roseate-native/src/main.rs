@@ -1,50 +1,59 @@
-use iced::widget::image::Handle;
-use iced::widget::{self, text};
-use iced::{Element, Font};
-use std::path::PathBuf;
-use rfd::FileDialog;
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")] // hide console window on Windows in release
+#![allow(rustdoc::missing_crate_level_docs)] // it's an example
+
+use egui_twemoji::EmojiLabel;
+use image::Image;
+use egui::load::Bytes;
+use eframe::egui::{self, vec2, FontId};
+
+mod image;
+
+fn main() -> eframe::Result {
+    let options = eframe::NativeOptions {
+        viewport: egui::ViewportBuilder::default().with_inner_size([800.0, 600.0]),
+        ..Default::default()
+    };
+
+    eframe::run_native(
+        "Roseate",
+        options,
+        Box::new(|cc| {
+            egui_extras::install_image_loaders(&cc.egui_ctx);
+            Ok(Box::<Roseate>::default())
+        }),
+    )
+}
 
 #[derive(Default)]
-struct Roseate {
-    image: Option<Handle>,
-    load_button_pressed: bool,
+struct Roseate<'a> {
+    image: Option<Image<'a>>
 }
 
-#[derive(Debug, Clone)]
-enum Message {
-    LoadImage,
-    ImageLoaded(Option<Handle>),
-}
+impl eframe::App for Roseate<'_> {
 
-impl Roseate {
-    fn update(&mut self, message: Message) {
-        match message {
-            Message::LoadImage => {
-                let path = FileDialog::new().add_filter("Image", &["png", "jpg", "jpeg"]).pick_file();
+    fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
 
-                if let Some(path) = path {
-                    let handle = Handle::from_path(path);
-                    self.image = Some(handle);
+        egui::CentralPanel::default().show(ctx, |ui| {
+
+            egui::ScrollArea::both().show(ui, |ui| {
+
+                match &self.image {
+                    Some(image) => {
+                        ui.add(
+                            egui::Image::new(image.image_source.clone())
+                                .fit_to_original_size(1.0)
+                                .rounding(20.0)
+                        );
+                    },
+                    None => {
+                        EmojiLabel::new("🌹").show(ui);
+                    }
                 }
-            }
-            Message::ImageLoaded(image) => {
-                self.image = image;
-            }
-        }
+
+            });
+
+        });
+
     }
 
-    fn view(&self) -> Element<Message> {
-        let load_button = widget::Button::new(
-            widget::Text::new("🌹").size(25).shaping(text::Shaping::Advanced)
-        ).on_press(Message::LoadImage);
-
-        // Image::new(image.clone()).width(Length::Units(500)).height(Length::Units(500));
-
-        widget::Container::new(load_button).into()
-    }
-}
-
-fn main() -> iced::Result {
-    iced::application("Roseate", Roseate::update, Roseate::view)
-        .run()
 }
