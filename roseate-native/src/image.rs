@@ -10,7 +10,7 @@ pub struct Image<'a> {
 
 impl Image<'_> {
 
-    fn from_path(path: &Path) -> Self {
+    pub fn from_path(path: &Path) -> Self {
         let image_string_path = path.to_str().expect("Failed to convert image path to str!");
 
         let image_bytes = fs::read(path).expect(&format!("Failed to read image at '{}'!", &image_string_path));
