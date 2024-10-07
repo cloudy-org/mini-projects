@@ -1,15 +1,14 @@
-use std::{borrow::Borrow, fs, path::Path};
+use std::{fs, path::Path, sync::Arc};
 
 use imagesize::ImageSize;
 
 pub struct Image {
     pub image_size: ImageSize,
     pub image_path: String,
-    pub image_bytes: Vec<u8>
+    pub image_bytes: Arc<[u8]>
 }
 
 impl Image {
-
     pub fn from_path(path: &Path) -> Self {
         let image_string_path = path.to_string_lossy();
 
@@ -22,7 +21,7 @@ impl Image {
         Self {
             image_size,
             image_path: image_string_path.to_string(),
-            image_bytes: image_bytes
+            image_bytes: Arc::from(image_bytes)
         }
     }
 }
