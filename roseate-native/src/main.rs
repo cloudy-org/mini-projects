@@ -46,16 +46,27 @@ impl eframe::App for Roseate {
         egui::CentralPanel::default().show(ctx, |ui| {
             let window_rect = ctx.input(|i: &egui::InputState| i.screen_rect());
 
-            let image_lock = IMAGE.read().unwrap();
+            let image_lock: Option<&'a Image> = IMAGE.read().unwrap().as_ref();
 
-            match image_lock.as_ref() {
+            match image_lock {
                 Some(image) => {
                     ui.centered_and_justified(|ui| {
                         egui::ScrollArea::both().show(ui, |ui| {
+                            let scale_x = window_rect.width() / image.image_size.width as f32;
+                            let scale_y = window_rect.height() / image.image_size.height as f32;
+
+                            let scale_factor = scale_x.min(scale_y); // Scale uniformly.
+
+                            // Make sure scale_factor doesn't exceed the original size (1).
+                            let scale_factor = scale_factor.min(1.0);
+
+                            let scaled_image_width = image.image_size.width as f32 * scale_factor;
+                            let scaled_image_height = image.image_size.height as f32 * scale_factor;
+
                             ui.add(
-                                egui::Image::new(image.image_source.clone())
-                                    .fit_to_original_size(1.0)
-                                    .rounding(20.0)
+                                egui::Image::from_bytes(
+                                    format!("bytes://{}", image.image_path), &*image.image_bytes
+                                ).max_width(scaled_image_width).max_height(scaled_image_height).rounding(20.0)
                             );
                         });
                     });

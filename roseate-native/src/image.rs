@@ -1,17 +1,17 @@
-use std::{fs, path::Path};
+use std::{borrow::Borrow, fs, path::Path};
 
 use imagesize::ImageSize;
-use eframe::egui::{load::Bytes, ImageSource};
 
-pub struct Image<'a> {
+pub struct Image {
     pub image_size: ImageSize,
-    pub image_source: ImageSource<'a>
+    pub image_path: String,
+    pub image_bytes: Vec<u8>
 }
 
-impl Image<'_> {
+impl Image {
 
     pub fn from_path(path: &Path) -> Self {
-        let image_string_path = path.to_str().expect("Failed to convert image path to str!");
+        let image_string_path = path.to_string_lossy();
 
         let image_bytes = fs::read(path).expect(&format!("Failed to read image at '{}'!", &image_string_path));
 
@@ -19,13 +19,10 @@ impl Image<'_> {
             "Failed to retrieve the dimensions of the image!"
         );
 
-        let image_source = ImageSource::Bytes { 
-            uri: std::borrow::Cow::Owned(
-                format!("bytes://{}", image_string_path)
-            ),
-            bytes: Bytes::Shared(image_bytes.into())
-        };
-
-        Self { image_size, image_source }
+        Self {
+            image_size,
+            image_path: image_string_path.to_string(),
+            image_bytes: image_bytes
+        }
     }
 }
