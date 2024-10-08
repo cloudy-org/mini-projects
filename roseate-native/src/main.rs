@@ -39,8 +39,7 @@ struct Roseate {
     image: Option<Image>,
     image_scale_factor: f32,
     resize_timer: Option<Instant>,
-    last_window_rect: Rect,
-    should_repaint: bool
+    last_window_rect: Rect
 }
 
 impl Roseate {
@@ -49,15 +48,14 @@ impl Roseate {
             image,
             image_scale_factor: 1.0,
             resize_timer: Some(Instant::now()),
-            last_window_rect: Rect::NOTHING,
-            should_repaint: false
+            last_window_rect: Rect::NOTHING
         }
     }
 
     fn scale_image_on_window_resize(&mut self, window_rect: &Rect) {
         if let Some(timer) = self.resize_timer {
             // If the timer has expired (no new resize events)
-            if timer.elapsed() >= Duration::from_millis(300) {
+            if timer.elapsed() >= Duration::from_millis(500) {
                 // Reset the timer
                 self.resize_timer = None;
 
@@ -85,10 +83,6 @@ impl eframe::App for Roseate {
             if window_rect.width() != self.last_window_rect.width() && window_rect.height() != self.last_window_rect.height() {
                 self.resize_timer = Some(Instant::now());
                 self.last_window_rect = window_rect;
-
-                self.should_repaint = true; // We need to request a repaint right after just in case one doesn't happen in certain circumstances
-                // (i.e. the user maximizes the window and doesn't interact with it, *DON'T TELL ME WHY BECAUSE I DON'T FUCKING KNOW WHY*).
-                // TODO: I do need to find out why this is happening.
             }
 
             if self.image.is_none() {
@@ -96,12 +90,7 @@ impl eframe::App for Roseate {
                     ui.add(egui::Image::new(get_platform_rose_image()).max_width(130.0));
                 });
 
-                self.should_repaint = false;
                 return;
-            }
-
-            if self.should_repaint {
-                ctx.request_repaint_after_secs(0.5);
             }
 
             self.scale_image_on_window_resize(&window_rect);
@@ -128,7 +117,9 @@ impl eframe::App for Roseate {
                 });
             });
 
-            self.should_repaint = false;
+            ctx.request_repaint_after_secs(1.0); // We need to request repaints just in 
+            // just in case one doesn't happen when the window is resized in a certain circumstance 
+            // (i.e. the user maximizes the window and doesn't interact with it). I'm not sure how else we can fix it.
         });
 
     }
