@@ -1,0 +1,37 @@
+{
+  "applicationId": "com.thenolle.Roseate",
+  "version": "1.0.0",
+  "defaultMode": "window",
+  "documentRoot": "/react/dist/",
+  "url": "/",
+  "enableServer": true,
+  "enableNativeAPI": true,
+  "nativeAllowList": [
+    "app.*"
+  ],
+  "modes": {
+    "window": {
+      "title": "Roseate",
+      "width": 1024,
+      "height": 768,
+      "minWidth": 800,
+      "minHeight": 600,
+      "icon": "/react/public/logo.png"
+    }
+  },
+  "cli": {
+    "binaryName": "roseate",
+    "resourcesPath": "/react/dist/",
+    "extensionsPath": "/extensions/",
+    "binaryVersion": "5.5.0",
+    "clientVersion": "5.5.0",
+    "frontendLibrary": {
+      "patchFile": "/react/index.html",
+      "devUrl": "http://localhost:3000",
+      "projectPath": "/react/",
+      "initCommand": "pnpm i",
+      "devCommand": "pnpm dev",
+      "buildCommand": "pnpm build"
+    }
+  }
+}

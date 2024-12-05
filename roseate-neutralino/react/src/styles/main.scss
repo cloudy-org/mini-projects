@@ -1,0 +1,47 @@
+@use "sass:color";
+
+$primary-color: #282c34;
+$secondary-color: #61dafb;
+$tertiary-color: #61dafb;
+$quaternary-color: #61dafb;
+
+* {
+	margin: 0;
+	padding: 0;
+	border: none;
+	outline: none;
+	box-sizing: border-box;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+html,
+body,
+#root {
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: $secondary-color;
+	background-color: $primary-color;
+}
+
+h1 {
+	font-size: 2rem;
+}
+
+button {
+	cursor: pointer;
+	padding: 0.5rem 1rem;
+	border-radius: 0.25rem;
+	color: $primary-color;
+	background-color: $secondary-color;
+
+	&:hover {
+		background-color: $tertiary-color;
+	}
+
+	&:active {
+		background-color: $quaternary-color;
+	}
+}
