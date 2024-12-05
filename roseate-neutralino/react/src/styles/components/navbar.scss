@@ -1,0 +1,17 @@
+@use '../colors' as colors;
+
+nav.navbar {
+	display: flex;
+	gap: 1rem;
+	padding: 1rem 2rem;
+	background-color: colors.$mirage;
+
+	a {
+		text-decoration: none;
+		color: colors.$alabaster;
+
+		&:hover {
+			color: colors.$perfume;
+		}
+	}
+}

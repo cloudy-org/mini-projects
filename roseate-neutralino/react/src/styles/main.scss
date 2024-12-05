@@ -1,9 +1,4 @@
-@use "sass:color";
-
-$primary-color: #282c34;
-$secondary-color: #61dafb;
-$tertiary-color: #61dafb;
-$quaternary-color: #61dafb;
+@use './colors' as colors;
 
 * {
 	margin: 0;
@@ -19,29 +14,13 @@ body,
 #root {
 	width: 100vw;
 	height: 100vh;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	color: $secondary-color;
-	background-color: $primary-color;
-}
+	display: grid;
+	grid-template-rows: auto 1fr;
+	grid-row-gap: 1rem;
+	color: colors.$alabaster;
+	background-color: colors.$bunker;
 
-h1 {
-	font-size: 2rem;
-}
-
-button {
-	cursor: pointer;
-	padding: 0.5rem 1rem;
-	border-radius: 0.25rem;
-	color: $primary-color;
-	background-color: $secondary-color;
-
-	&:hover {
-		background-color: $tertiary-color;
-	}
-
-	&:active {
-		background-color: $quaternary-color;
+	.page {
+		padding: 1rem;
 	}
 }
